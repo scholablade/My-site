@@ -1,9 +1,6 @@
 --------------------------------------------------------------------------------
 {-# LANGUAGE OverloadedStrings #-}
-import           Data.Monoid (mappend)
 import           Hakyll
-
-
 --------------------------------------------------------------------------------
 main :: IO ()
 main = hakyllWith config $ do
@@ -15,7 +12,7 @@ main = hakyllWith config $ do
         route   idRoute
         compile compressCssCompiler
 
-    match (fromList ["about.rst", "contact.markdown"]) $ do
+    match (fromList ["about.org", "contact.org"]) $ do
         route   $ setExtension "html"
         compile $ pandocCompiler
             >>= loadAndApplyTemplate "templates/default.html" defaultContext
@@ -27,7 +24,6 @@ main = hakyllWith config $ do
             >>= loadAndApplyTemplate "templates/post.html"    postCtx
             >>= loadAndApplyTemplate "templates/default.html" postCtx
             >>= relativizeUrls
-
     create ["archive.html"] $ do
         route idRoute
         compile $ do
@@ -59,13 +55,15 @@ main = hakyllWith config $ do
 
     match "templates/*" $ compile templateCompiler
 
+--------------------------------------------------------------------------------
 config :: Configuration
 config = defaultConfiguration
   { destinationDirectory = "docs"
   }
---------------------------------------------------------------------------------
+
 postCtx :: Context String
 postCtx =
     dateField "date" "%B %e, %Y" `mappend`
     defaultContext
+
 
