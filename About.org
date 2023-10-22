@@ -1,0 +1,1 @@
+Hello, I go by the username Schola in the internet, I love *purely* functional programming, specifically Haskell and Purescript, Am a big believer in FOSS (Free & Open Source Software), among many other things.
