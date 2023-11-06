@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <title>My Hakyll Blog - My Yesod Review</title>
+        <link rel="stylesheet" type="text/css" href="../css/default.css" />
+    </head>
+    <body>
+        <div id="header">
+            <div id="logo">
+                <a href="../">Schola's personal website</a>
+            </div>
+            <div id="navigation">
+                <a href="../">Home</a>
+                <a href="../about.html">About</a>
+                <a href="../contact.html">Contact</a>
+                <a href="../archive.html">Archive</a>
+            </div>
+        </div>
+
+        <div id="content">
+            <h1>My Yesod Review</h1>
+
+            <div class="info">
+    Posted on November  6, 2023
+    
+</div>
+
+<p>I have had some experience with the Yesod framework and wanted to share
+my opinion on whether it's good or bad.</p>
+<h1 id="what-is-yesod">What is yesod?</h1>
+<p>Yesod is an MVC framework so think of Ruby on Rails or Django, written
+and used in Haskell, it's mostly split into three parts.</p>
+<h1 id="controllers-routing-and-handlers">Controllers (Routing and Handlers)</h1>
+<p>Controllers is the part where you write the logic of the website like
+what routes you want to have and what to do when you receive a request,
+in Yesod this is split between two sections:</p>
+<h2 id="routing">Routing</h2>
+<p>Routing is done via an embedded domain specific language utilizing
+Haskell's Template Haskell, it's easy and it's the best part about
+Yesod in my opinion, here is an example:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="op">/</span>software<span class="op">/#</span><span class="dt">SoftwareId</span> <span class="dt">SoftwareR</span> <span class="dt">GET</span> <span class="dt">POST</span></span></code></pre></div>
+<p>This adds a software route with an enumerated <code>SoftwareId</code> integer,
+<code>SoftwareR</code> is the identifier to use for the route, <code>GET</code> and <code>POST</code> are
+the HTTP methods allowed.</p>
+<h2 id="handlers">Handlers</h2>
+<p>Handlers are done in the Handler monad, to make a Handler, for example
+to make a <code>GET</code> handler, you make a function name starting with <code>get</code>
+like <code>getHomeR = ...</code> and likewise with <code>POST</code>.</p>
+<h1 id="view">View</h1>
+<p>The view is what the end user sees in a website, from all the fanciness
+of CSS to the dynamism of JS, it's all here.</p>
+<h2 id="shakespearen-templates">Shakespearen templates</h2>
+<p>Shakespearean templates are what you would use to make the view, they
+are different from web DSLs by having:</p>
+<ul>
+<li>type guarantees</li>
+<li>Interopelation of Haskell data</li>
+<li>Indentation style rather than curly braces style.</li>
+</ul>
+<p>Shakspearen templates also have an Emacs mode which is nice.</p>
+<h2 id="widget">Widget</h2>
+<p>Widget is the monad where your shakespearen templates live in, the great
+thing about Widget is that you can easily compose it, assume that you
+have widgetHtml, widgetCSS, widgetJS, you can easily compose them like
+<code>widgetFull =  widgetHtml + widgetCSS + widgetJS.</code></p>
+<h1 id="model">Model</h1>
+<p>The default database interface is Persistent (it comes with the DB
+oriented scaffold's), you can use SQLite, Postgresql and more.</p>
+<h2 id="persistent">Persistent</h2>
+<p>To make effects (use the DB), you can use use the entry point function
+<code>runDB</code>, there was a large learning curve to make sure that the types
+match but after you understand it, it's pretty smooth.</p>
+<h1 id="pros-cons">Pros &amp;&amp; Cons</h1>
+<h2 id="pros">Pros</h2>
+<h3 id="modularity">Modularity</h3>
+<p>Yesod is modular where you can choose DB's or template engines, it is
+also build on top of WAI which is/can also used by other
+libraries/frameworks like Servant and IHP.</p>
+<h3 id="documentation">Documentation</h3>
+<p>Yesod has a book that is easy to read and has great code examples though
+it is slightly terse in that i wish it has a bit more depth is some
+topics.</p>
+<h2 id="cons">Cons</h2>
+<h3 id="modularity-1">Modularity</h3>
+<p>Modularity is a pro and a con for Yesod, the problem is that since Yesod
+is so modular, the documentation takes a hit by not necessarily assuming
+that you are using the default scaffold.</p>
+<h3 id="lack-of-community">Lack of community</h3>
+<p>This is my biggest problem with Yesod, it lacks a community around it
+therefore you have to ask in haskell channels which may or may not
+provide the help wanted.</p>
+<h3 id="persistent-1">Persistent</h3>
+<p>Persistent lacks composability badly, there are most likely reasons for
+this but it still a complaint in my opinion</p>
+<h3 id="bootstrap-version">Bootstrap version</h3>
+<p>In the scaffolding, Yesod still uses Bootstrap 3, rather than Bootstrap
+4 or even 5, which makes finding documentation a little unpleasant.</p>
+<h3 id="language-extensions">Language extensions</h3>
+<p>Yesod uses language extensions, some of which are:</p>
+<ol type="1">
+<li><p>Template Haskell</p>
+<p>I like the use of template haskell as a way to make DSL's for
+routing and compsobale widgets, the error messages though generally
+are horrible are extremely confusing.</p></li>
+<li><p>Typefamilies</p>
+<p>As Yesod is a beginner web framework, it shouldn't deal with
+type-level programming but alas it does with functions from types to
+types.</p></li>
+</ol>
+<h3 id="refresh">Refresh</h3>
+<p>Yesod doesn't automatically refresh the browser, in 2023 this is a
+necessary feature and makes the developer experience much much better.</p>
+
+        </div>
+        <div id="footer">
+            Site proudly generated by
+            <a href="http://jaspervdj.be/hakyll">Hakyll</a>
+        </div>
+    </body>
+</html>
